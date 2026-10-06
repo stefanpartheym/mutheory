@@ -1,5 +1,5 @@
 const std = @import("std");
-const Fifths = @import("fifths.zig");
+const fifths = @import("fifths.zig");
 const Key = @import("Key.zig");
 const Mode = Key.Mode;
 
@@ -40,9 +40,9 @@ pub fn random(rng: std.Random) Self {
 pub fn answer(self: Self) Key {
     const index_signed: i8 = @intCast(self.index);
     const tonic = switch (self.direction) {
-        .left => Fifths.at(self.mode, index_signed - 1),
-        .right => Fifths.at(self.mode, index_signed + 1),
-        .relative => Fifths.relative(self.mode, index_signed),
+        .left => fifths.at(self.mode, index_signed - 1),
+        .right => fifths.at(self.mode, index_signed + 1),
+        .relative => fifths.relative(self.mode, index_signed),
     };
     const mode = switch (self.direction) {
         .left, .right => self.mode,
@@ -53,7 +53,7 @@ pub fn answer(self: Self) Key {
 }
 
 pub fn format(self: Self, w: *std.Io.Writer) std.Io.Writer.Error!void {
-    const note = Fifths.at(self.mode, @intCast(self.index));
+    const note = fifths.at(self.mode, @intCast(self.index));
     const key = Key{ .tonic = note, .mode = self.mode };
 
     try switch (self.direction) {
